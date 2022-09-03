@@ -40,7 +40,9 @@ const loadNews = (id)=>{
 
 const showNews = newsId =>{
     const newsContainer = document.getElementById('newsContainer');
+    newsContainer.innerHTML = '';
     newsId.data.forEach(element => {
+        console.log(element);
         const cardBody = document.createElement('div');
         cardBody.setAttribute('class', 'card mb-3');
         cardBody.innerHTML = `
@@ -50,13 +52,33 @@ const showNews = newsId =>{
             </div>
             <div class="col-md-8">
                 <div class="card-body">
-                    <h5 class="card-title">Card title</h5>
-                    <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
-                    <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p>
+                    <h5 class="card-title">${element.title}</h5>
+                    <p class="card-text">${element.title}</p>
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div class="d-flex align-items-center gap-3">
+                            <img src="${element.author.img}" style="height:48px; width:48px; border-radius:50%" >
+                            <div>
+                                <p class="m-0 fw-semibold">${element.author.name}</p>
+                                <p class="card-text"><small class="text-muted">${element.author.published_date}</small></p>
+                            </div>
+                        </div>
+                        <div>
+                            <p class="fs-3 m-0" onclick="openModal('${element._id}')" title="Show Details"><i class="fa-solid fa-arrow-right"></i></p>
+                        </div>    
+                    </div>
                 </div>
             </div>
         </div>
     `
         newsContainer.appendChild(cardBody);
     });
+}
+
+loadNews('01');
+
+
+function openModal(_id){
+    fetch(`https://openapi.programming-hero.com/api/news/${_id}`)
+        .then(res => res.json())
+        .then(data => console.log(data))
 }
