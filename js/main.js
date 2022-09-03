@@ -2,6 +2,7 @@ const loadCategory = ()=>{
     fetch('https://openapi.programming-hero.com/api/news/categories')
         .then(res => res.json())
         .then(data => categoryName(data))
+        .catch((data)=> console.log(data + 'no data available'))
 }
 loadCategory();
 
@@ -52,21 +53,21 @@ const showNews = newsId =>{
             </div>
             <div class="col-md-8">
                 <div class="card-body">
-                    <h5 class="card-title">${element.title}</h5>
-                    <p class="card-text">${element.title}</p>
+                    <h5 class="card-title">${dataValidation(element.title)}</h5>
+                    <p class="card-text text-truncate">${dataValidation(element.details)}</p>
                     <div class="d-flex justify-content-between align-items-center">
                         <div class="d-flex align-items-center gap-3">
                             <img src="${element.author.img}" style="height:48px; width:48px; border-radius:50%" >
                             <div>
-                                <p class="m-0 fw-semibold">${element.author.name}</p>
-                                <p class="card-text"><small class="text-muted">${element.author.published_date}</small></p>
+                                <p class="m-0 fw-semibold">${dataValidation(element.author.name)}</p>
+                                <p class="card-text"><small class="text-muted">${dataValidation(element.author.published_date)}</small></p>
                             </div>
                         </div>
                         <div>
-                            <p class="m-0 fw-semibold"><span><i class="fa-regular fa-eye"></i> </span>${element.total_view}</p>
+                            <p class="m-0 fw-semibold"><span><i class="fa-regular fa-eye"></i> </span>${dataValidation(element.total_view)}</p>
                         </div>
                         <div>
-                            <p class="fs-3 m-0" onclick="openModal('${element._id}')" title="Show Details" data-bs-toggle="modal" data-bs-target="#exampleModal"><i class="fa-solid fa-arrow-right"></i></p>
+                            <p class="fs-3 m-0" onclick="openModal('${dataValidation(element._id)}')" title="Show Details" data-bs-toggle="modal" data-bs-target="#exampleModal"><i class="fa-solid fa-arrow-right"></i></p>
                         </div>    
                     </div>
                 </div>
@@ -97,6 +98,7 @@ function openModal(_id){
     fetch(`https://openapi.programming-hero.com/api/news/${_id}`)
         .then(res => res.json())
         .then(data => modalDetails(data))
+        .catch((data)=> console.log(data+'no data found'))
 }
 
 const modalDetails =(details)=>{
@@ -107,17 +109,29 @@ const modalDetails =(details)=>{
     const author = details.data[0].author;
 
     newsBody.innerHTML = `
-        <img src='${details.data[0].image_url}' class="img-fluid">
+        <img src='${dataValidation(data[0].image_url)}' class="img-fluid">
         <div class="d-flex align-items-center gap-3 my-2">
-            <img src="${author.img}" style="height:48px; width:48px; border-radius:50%" >
+            <img src="${dataValidation(author.img)}" style="height:48px; width:48px; border-radius:50%" >
                 <div>
-                    <p class="m-0 fw-semibold">${author.name}</p>
-                    <p class="card-text"><small class="text-muted">${author.published_date}</small></p>
+                    <p class="m-0 fw-semibold">${dataValidation(author.name)}</p>
+                    <p class="card-text"><small class="text-muted">${dataValidation(author.published_date)}</small></p>
                 </div>
         </div>
         <hr>
         <div>
-            <p>${details.data[0].details}</p>
+            <p>${dataValidation(details.data[0].details)}</p>
         </div>
     `
+}
+
+function dataValidation(data){
+    if(data === ''){
+        return 'No data available';
+    }
+    else if(data  === null){
+        return 'No data available'
+    }
+    else{
+        return data;
+    }
 }
