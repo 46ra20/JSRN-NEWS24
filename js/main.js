@@ -7,12 +7,12 @@ loadCategory();
 
 
 const categoryName = category =>{
-    console.log(category);
     for (const name of category.data.news_category){
         const {category_id, category_name} = name;
         categoryList(category_id, category_name);
     }
 }
+
 
 const categoryList = (id, name) =>{
     const categoryContainer = document.getElementById('categoryContainer');
@@ -24,7 +24,6 @@ const categoryList = (id, name) =>{
     categoryContainer.appendChild(createCategory);
 
     document.getElementById(`${id}`).addEventListener('click',()=>{
-        console.log(id);
         loadNews(id);
     })
 }
@@ -41,8 +40,9 @@ const loadNews = (id)=>{
 const showNews = newsId =>{
     const newsContainer = document.getElementById('newsContainer');
     newsContainer.innerHTML = '';
+    categoryLength(newsId);
+
     newsId.data.forEach(element => {
-        console.log(element);
         const cardBody = document.createElement('div');
         cardBody.setAttribute('class', 'card mb-3');
         cardBody.innerHTML = `
@@ -77,6 +77,18 @@ const showNews = newsId =>{
     });
 }
 
+const categoryLength = (category) => {
+    console.log(category);
+    const numberOfNews = document.getElementById('numberOfNews');
+    const newsLength = category.data.length;
+    if(newsLength > 0){
+        numberOfNews.innerText = newsLength + ' item found';
+    }
+    else{
+        numberOfNews.innerText = 'No item found for this';
+    }
+}
+
 loadNews('01');
 
 
@@ -107,6 +119,4 @@ const modalDetails =(details)=>{
             <p>${details.data[0].details}</p>
         </div>
     `
-    console.log(details);
-
 }
