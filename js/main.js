@@ -99,7 +99,7 @@ const categoryLength = (category) => {
     const numberOfNews = document.getElementById('numberOfNews');
     const newsLength = category.length;
     if(newsLength > 0){
-        numberOfNews.innerText = newsLength + ' item found';
+        numberOfNews.innerText = newsLength + " item's found";
     }
     else{
         numberOfNews.innerText = 'No item found for this';
