@@ -19,7 +19,7 @@ const categoryList = (id, name) =>{
     const categoryContainer = document.getElementById('categoryContainer');
     const createCategory = document.createElement('li');
     createCategory.classList.add('nav-link');
-    createCategory.style.cursor = 'pointer'
+    createCategory.style.cursor = 'pointer';
     createCategory.setAttribute('id',`${id}`);
     createCategory.innerHTML = name;
     categoryContainer.appendChild(createCategory);
@@ -35,15 +35,31 @@ const categoryList = (id, name) =>{
 const loadNews = (id)=>{
     fetch(`https://openapi.programming-hero.com/api/news/category/${id}`)
         .then(res => res.json())
-        .then(data => showNews(data))
+        .then(data => {
+            // showNews(data)
+            dataSort(data)
+        })
         .catch((data) => console.log(data + 'No data Found'));
+}
+
+loadNews('01');
+
+const dataSort = (data)=>{
+    let byView = data.data.slice(0);
+
+    byView.sort(function (a, b) {
+        return b.total_view - a.total_view;
+    });
+
+    showNews(byView);
+
 }
 
 const showNews = newsId =>{
     const newsContainer = document.getElementById('newsContainer');
     newsContainer.innerHTML = '';
     categoryLength(newsId);
-    newsId.data.forEach(element => {
+    newsId.forEach(element => {
         const cardBody = document.createElement('div');
         cardBody.setAttribute('class', 'card mb-3');
         cardBody.innerHTML = `
@@ -67,7 +83,7 @@ const showNews = newsId =>{
                             <p class="m-0 fw-semibold"><span><i class="fa-regular fa-eye"></i> </span>${dataValidation(element.total_view)}</p>
                         </div>
                         <div>
-                            <p class="fs-3 m-0" onclick="openModal('${dataValidation(element._id)}')" title="Show Details" data-bs-toggle="modal" data-bs-target="#exampleModal"><i class="fa-solid fa-arrow-right"></i></p>
+                            <p class="fs-3 m-0" onclick="openModal('${dataValidation(element._id)}')" style="cursor:pointer;" title="Show Details" data-bs-toggle="modal" data-bs-target="#exampleModal"><i class="fa-solid fa-arrow-right"></i></p>
                         </div>    
                     </div>
                 </div>
@@ -80,9 +96,8 @@ const showNews = newsId =>{
 }
 
 const categoryLength = (category) => {
-    console.log(category);
     const numberOfNews = document.getElementById('numberOfNews');
-    const newsLength = category.data.length;
+    const newsLength = category.length;
     if(newsLength > 0){
         numberOfNews.innerText = newsLength + ' item found';
     }
@@ -91,14 +106,13 @@ const categoryLength = (category) => {
     }
 }
 
-loadNews('01');
 
 
 function openModal(_id){
     fetch(`https://openapi.programming-hero.com/api/news/${_id}`)
         .then(res => res.json())
         .then(data => modalDetails(data))
-        .catch((data)=> console.log(data+'no data found'))
+        .catch((data)=> console.log(data+' no data found'))
 }
 
 const modalDetails =(details)=>{
@@ -109,7 +123,7 @@ const modalDetails =(details)=>{
     const author = details.data[0].author;
 
     newsBody.innerHTML = `
-        <img src='${dataValidation(data[0].image_url)}' class="img-fluid">
+        <img src='${dataValidation(details.data[0].image_url)}' class="img-fluid">
         <div class="d-flex align-items-center gap-3 my-2">
             <img src="${dataValidation(author.img)}" style="height:48px; width:48px; border-radius:50%" >
                 <div>
