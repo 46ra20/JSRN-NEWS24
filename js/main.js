@@ -25,6 +25,7 @@ const categoryList = (id, name) =>{
 
     document.getElementById(`${id}`).addEventListener('click',()=>{
         loadNews(id);
+        document.getElementById('spinierContainer').classList.remove('d-none');
     })
 }
 
@@ -41,7 +42,6 @@ const showNews = newsId =>{
     const newsContainer = document.getElementById('newsContainer');
     newsContainer.innerHTML = '';
     categoryLength(newsId);
-
     newsId.data.forEach(element => {
         const cardBody = document.createElement('div');
         cardBody.setAttribute('class', 'card mb-3');
@@ -75,6 +75,7 @@ const showNews = newsId =>{
     `
         newsContainer.appendChild(cardBody);
     });
+    document.getElementById('spinierContainer').classList.add('d-none');
 }
 
 const categoryLength = (category) => {
