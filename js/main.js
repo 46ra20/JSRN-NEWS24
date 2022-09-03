@@ -63,6 +63,9 @@ const showNews = newsId =>{
                             </div>
                         </div>
                         <div>
+                            <p class="m-0 fw-semibold"><span><i class="fa-regular fa-eye"></i> </span>${element.total_view}</p>
+                        </div>
+                        <div>
                             <p class="fs-3 m-0" onclick="openModal('${element._id}')" title="Show Details" data-bs-toggle="modal" data-bs-target="#exampleModal"><i class="fa-solid fa-arrow-right"></i></p>
                         </div>    
                     </div>
@@ -86,6 +89,24 @@ function openModal(_id){
 const modalDetails =(details)=>{
     const newsTitle = document.getElementById('exampleModalLabel');
     newsTitle.innerText = details.data[0].title;
+
+    const newsBody = document.getElementById('modalBody');
+    const author = details.data[0].author;
+
+    newsBody.innerHTML = `
+        <img src='${details.data[0].image_url}' class="img-fluid">
+        <div class="d-flex align-items-center gap-3 my-2">
+            <img src="${author.img}" style="height:48px; width:48px; border-radius:50%" >
+                <div>
+                    <p class="m-0 fw-semibold">${author.name}</p>
+                    <p class="card-text"><small class="text-muted">${author.published_date}</small></p>
+                </div>
+        </div>
+        <hr>
+        <div>
+            <p>${details.data[0].details}</p>
+        </div>
+    `
     console.log(details);
 
 }
