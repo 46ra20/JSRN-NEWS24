@@ -63,7 +63,7 @@ const showNews = newsId =>{
                             </div>
                         </div>
                         <div>
-                            <p class="fs-3 m-0" onclick="openModal('${element._id}')" title="Show Details"><i class="fa-solid fa-arrow-right"></i></p>
+                            <p class="fs-3 m-0" onclick="openModal('${element._id}')" title="Show Details" data-bs-toggle="modal" data-bs-target="#exampleModal"><i class="fa-solid fa-arrow-right"></i></p>
                         </div>    
                     </div>
                 </div>
@@ -80,5 +80,12 @@ loadNews('01');
 function openModal(_id){
     fetch(`https://openapi.programming-hero.com/api/news/${_id}`)
         .then(res => res.json())
-        .then(data => console.log(data))
+        .then(data => modalDetails(data))
+}
+
+const modalDetails =(details)=>{
+    const newsTitle = document.getElementById('exampleModalLabel');
+    newsTitle.innerText = details.data[0].title;
+    console.log(details);
+
 }
