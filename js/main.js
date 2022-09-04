@@ -69,8 +69,8 @@ const showNews = newsId =>{
             </div>
             <div class="col-md-8">
                 <div class="card-body">
-                    <h5 class="card-title">${dataValidation(element.title)}</h5>
-                    <p class="card-text text-truncate">${dataValidation(element.details)}</p>
+                    <h5 class="card-title text-truncate">${dataValidation(element.title)}</h5>
+                    <p class="card-text">${dataValidation(element.details.slice(0,180))}...</p>
                     <div class="d-flex justify-content-between align-items-center">
                         <div class="d-flex align-items-center gap-3">
                             <img src="${element.author.img}" style="height:48px; width:48px; border-radius:50%" >
